@@ -15,7 +15,11 @@
   import TransactionList from './components/TransactionList.vue'
   import AddTransaction from './components/AddTransaction.vue'
 
+  import { useToast } from 'vue-toastification'
+
   import { ref, computed } from 'vue'
+
+  const toast = useToast()
 
   const transactions = ref([
     { id: 1, text: 'Flower', amount: -20.99 },
@@ -45,11 +49,20 @@
       .toFixed(2)
   })
 
+  // Generate unique ID
+  const generateUniqueId = () => {
+    return Math.random().toString(36).substr(2, 9)
+  }
+
   const handleTransactionSubmitted = (transactionData) => {
     transactions.value.push({
-      id: transactions.value.length + 1,
+      id: generateUniqueId(),
       text: transactionData.text,
       amount: transactionData.amount
+    })
+
+    toast('Transaction added!', {
+      type: 'success'
     })
   }
 </script>
