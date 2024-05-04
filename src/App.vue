@@ -2,7 +2,7 @@
   <Header/>
   <div class="container">
     <Balance :total="total"/>
-    <IncomeExpenses/>
+    <IncomeExpenses :income="income" :expenses="expenses"/>
     <TransactionList :transactions="transactions"/>
     <AddTransaction/>
   </div>
@@ -24,18 +24,24 @@
     { id: 4, text: 'Camera', amount: 150.01 }
   ])
 
+  // Get Total
   const total = computed(() => {
     return transactions.value.reduce((acc, item) => (acc += item.amount), 0).toFixed(2)
   })
 
-// Options API
-  // export default {
-  //   components: {
-  //     Header,
-  //     Balance,
-  //     IncomeExpenses,
-  //     TransactionList,
-  //     AddTransaction
-  //   }
-  // }
+  // Get income
+  const income = computed(() => {
+    return transactions.value
+      .filter(item => item.amount > 0)
+      .reduce((acc, item) => (acc += item.amount), 0)
+      .toFixed(2)
+  })
+
+  // Get expenses
+  const expenses = computed(() => {
+    return transactions.value
+      .filter(item => item.amount < 0)
+      .reduce((acc, item) => (acc += item.amount), 0) * -1
+      .toFixed(2)
+  })
 </script>
