@@ -4,7 +4,7 @@
     <Balance :total="+total"/>
     <IncomeExpenses :income="+income" :expenses="+expenses"/>
     <TransactionList :transactions="transactions"/>
-    <AddTransaction/>
+    <AddTransaction @transactionSubmitted="handleTransactionSubmitted"/>
   </div>
 </template>
 
@@ -44,4 +44,12 @@
       .reduce((acc, item) => (acc += item.amount), 0) * -1
       .toFixed(2)
   })
+
+  const handleTransactionSubmitted = (transactionData) => {
+    transactions.value.push({
+      id: transactions.value.length + 1,
+      text: transactionData.text,
+      amount: transactionData.amount
+    })
+  }
 </script>
